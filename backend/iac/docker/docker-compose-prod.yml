@@ -1,0 +1,58 @@
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app}
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+      target: build
+    environment:
+      NODE_ENV: production
+      DATABASE_URL_CORE: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-app}@postgres:5432/${POSTGRES_DB:-app}?schema=core
+      DATABASE_URL_PRODUCTS: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-app}@postgres:5432/${POSTGRES_DB:-app}?schema=products
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command:
+      - /bin/sh
+      - -lc
+      - |
+        printf 'CREATE SCHEMA IF NOT EXISTS "core";' | npx prisma db execute --stdin --schema libs/core/src/providers/prisma/schema.prisma
+        printf 'CREATE SCHEMA IF NOT EXISTS "products";' | npx prisma db execute --stdin --schema libs/products/src/infrastructure/prisma/schema.prisma
+        npx prisma migrate deploy --schema libs/core/src/providers/prisma/schema.prisma
+        npx prisma migrate deploy --schema libs/products/src/infrastructure/prisma/schema.prisma
+    restart: 'no'
+
+  app:
+    image: modular-monolith-app-console:latest
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+      target: runtime
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL_CORE: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-app}@postgres:5432/${POSTGRES_DB:-app}?schema=core
+      DATABASE_URL_PRODUCTS: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-app}@postgres:5432/${POSTGRES_DB:-app}?schema=products
+      CORE_LOG_FILE_PATH: /tmp/core.log
+      PRODUCTS_LOG_FILE_PATH: /tmp/products.log
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  postgres_prod_data:

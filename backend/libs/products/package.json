@@ -1,0 +1,16 @@
+{
+  "name": "@app/products",
+  "version": "0.0.1",
+  "dependencies": {
+    "@prisma/client": "^6.2.1",
+    "tslib": "^2.3.0"
+  },
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "private": true,
+  "nx": {
+    "sourceRoot": "libs/products/src",
+    "name": "products"
+  }
+}

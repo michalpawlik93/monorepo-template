@@ -1,0 +1,13 @@
+.git
+.github
+.nx
+coverage
+dist
+logs
+node_modules
+tmp
+
+iac/docker/data
+iac/docker/.env
+
+*.log

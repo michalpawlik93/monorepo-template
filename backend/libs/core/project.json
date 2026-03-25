@@ -1,0 +1,32 @@
+{
+  "name": "core",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/core/src",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["^build"],
+      "outputs": ["{workspaceRoot}/dist/out-tsc/libs/core"],
+      "options": {
+        "command": "npx tsc -b libs/core/tsconfig.lib.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["libs/core/**/*.ts"],
+        "eslintConfig": "libs/core/.eslintrc.json"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/core"],
+      "options": {
+        "jestConfig": "libs/core/jest.config.ts",
+        "passWithNoTests": false
+      }
+    }
+  },
+  "tags": ["type:lib", "scope:core"]
+}

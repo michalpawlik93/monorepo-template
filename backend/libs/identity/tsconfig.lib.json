@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc/libs/identity",
+    "declaration": true,
+    "declarationMap": true,
+    "types": ["node"],
+    "composite": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/__tests__/**/*",
+    "src/**/__fixtures__/**/*"
+  ],
+  "references": [{ "path": "../core/tsconfig.lib.json" }]
+}

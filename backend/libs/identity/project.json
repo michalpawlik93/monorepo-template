@@ -1,0 +1,24 @@
+{
+  "name": "identity",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/identity/src",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+          "lintFilePatterns": ["libs/identity/**/*.ts"],
+        "eslintConfig": "libs/identity/.eslintrc.json"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/identity"],
+      "options": {
+        "jestConfig": "libs/identity/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["type:lib", "scope:domain-identity"]
+}

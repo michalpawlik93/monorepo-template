@@ -1,0 +1,32 @@
+{
+  "name": "products",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/products/src",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["^build"],
+      "outputs": ["{workspaceRoot}/dist/out-tsc/libs/products"],
+      "options": {
+        "command": "npx tsc -b libs/products/tsconfig.lib.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["libs/products/**/*.ts"],
+        "eslintConfig": "libs/products/.eslintrc.json"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/products"],
+      "options": {
+        "jestConfig": "libs/products/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["type:lib", "scope:domain-products"]
+}

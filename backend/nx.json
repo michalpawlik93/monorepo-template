@@ -1,0 +1,39 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test"]
+      }
+    }
+  },
+  "targetDefaults": {
+    "lint": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{projectRoot}/.eslintrc.json", "{workspaceRoot}/tsconfig.base.json"]
+    },
+    "test": {
+      "inputs": ["default", "^default"],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"]
+    }
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [
+      "{workspaceRoot}/jest.preset.js",
+      "{workspaceRoot}/tsconfig.base.json",
+      "{workspaceRoot}/.eslintrc.json"
+    ]
+  },
+  "workspaceLayout": {
+    "appsDir": "apps",
+    "libsDir": "libs"
+  },
+  "projects": {
+    "app-console": "apps/app-console",
+    "identity": "libs/identity",
+    "integration-contracts": "libs/integration-contracts",
+    "products": "libs/products",
+    "core": "libs/core"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "types": ["jest", "node"]
+  },
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.d.ts",
+    "src/**/__fixtures__/**/*.ts"
+  ],
+  "exclude": [],
+  "references": [{ "path": "./tsconfig.lib.json" }]
+}

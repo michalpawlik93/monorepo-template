@@ -1,0 +1,97 @@
+{
+  "name": "app-console",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/app-console/src",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["apps/app-console/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/apps/app-console"],
+      "options": {
+        "jestConfig": "apps/app-console/jest.config.ts",
+        "passWithNoTests": false
+      }
+    },
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/app-console",
+        "format": ["cjs"],
+        "bundle": true,
+        "main": "apps/app-console/src/main.ts",
+        "tsConfig": "apps/app-console/tsconfig.app.json",
+        "assets": [
+          "apps/app-console/src/assets",
+          "apps/app-console/.env.*",
+          {
+            "input": "apps/app-console/staticFiles",
+            "glob": "**/*",
+            "output": "staticFiles"
+          }
+        ],
+        "generatePackageJson": true
+      },
+      "configurations": {
+        "development": {
+          "bundle": true,
+          "generateLockfile": true,
+          "esbuildOptions": {
+            "format": "cjs",
+            "platform": "node",
+            "sourcemap": true,
+            "outExtension": {
+              ".js": ".js"
+            },
+            "loader": {
+              ".node": "file"
+            }
+          }
+        },
+        "production": {
+          "bundle": true,
+          "generateLockfile": true,
+          "esbuildOptions": {
+            "sourcemap": false,
+            "minify": true,
+            "treeShaking": true,
+            "format": "cjs",
+            "platform": "node",
+            "outExtension": {
+              ".js": ".js"
+            },
+            "loader": {
+              ".node": "file"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "app-console:build",
+        "runtimeArgs": ["--inspect=9229"],
+        "watch": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "app-console:build:development"
+        },
+        "production": {
+          "buildTarget": "app-console:build:production"
+        }
+      }
+    }
+  },
+  "tags": ["type:app"]
+}

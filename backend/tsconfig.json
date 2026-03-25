@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    { "path": "libs/core/tsconfig.lib.json" },
+    { "path": "libs/core/tsconfig.spec.json" },
+    { "path": "libs/products/tsconfig.lib.json" },
+    { "path": "libs/products/tsconfig.spec.json" },
+    { "path": "apps/app-console/tsconfig.app.json" },
+    { "path": "libs/identity/tsconfig.lib.json" },
+    { "path": "libs/identity/tsconfig.spec.json" },
+  ]
+}

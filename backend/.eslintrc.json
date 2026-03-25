@@ -1,0 +1,47 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.nx/**",
+    "**/coverage/**",
+    "**/prisma/generated/**"
+  ],
+  "plugins": ["@nx"],
+  "extends": ["plugin:@nx/typescript"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_"
+          }
+        ],
+       "@nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "type:app",
+                "onlyDependOnLibsWithTags": ["type:lib", "scope:core", "scope:domain-*"]
+              },
+              {
+                "sourceTag": "scope:domain-*",
+                "onlyDependOnLibsWithTags": ["scope:core"]
+              },
+              {
+                "sourceTag": "scope:core",
+                "onlyDependOnLibsWithTags": []
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
