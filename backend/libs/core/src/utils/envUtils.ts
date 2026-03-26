@@ -47,7 +47,12 @@ export const resolveLogFilePath = (
     return value;
   }
 
-  return path.join(cwd, value);
+  const resolved = path.resolve(cwd, value);
+  if (!resolved.startsWith(path.resolve(cwd))) {
+    return path.join(cwd, logsDirectory, `${appName}.log`);
+  }
+
+  return resolved;
 };
 
 export const resolvePositiveInt = (value?: string | null): number | undefined => {

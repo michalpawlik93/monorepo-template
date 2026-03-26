@@ -1,7 +1,6 @@
 import { isErr } from '@app/core';
 import { BASE_ACCESS_ROLE } from '../../domain';
-import { IPermissionRepository } from './permission.repository';
-import { IRoleRepository } from './role.repository';
+import { IPermissionRepository, IRoleRepository } from '../../domain';
 import { identityDb } from './tx';
 
 export const seedIdentityDefaults = async (

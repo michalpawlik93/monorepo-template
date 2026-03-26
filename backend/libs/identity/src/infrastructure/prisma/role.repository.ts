@@ -1,16 +1,7 @@
 import { injectable } from 'inversify';
 import { BasicError, Result, basicErr, getErrorMessage, notFoundErr, ok } from '@app/core';
-import { Role } from '../../domain';
+import { IRoleRepository, Role } from '../../domain';
 import { identityDb } from './tx';
-
-export interface IRoleRepository {
-  findById: (id: string) => Promise<Result<Role, BasicError>>;
-  findByName: (name: string) => Promise<Result<Role, BasicError>>;
-  findAll: () => Promise<Result<Role[], BasicError>>;
-  create: (data: Pick<Role, 'name' | 'description'>) => Promise<Result<Role, BasicError>>;
-}
-
-export const ROLE_REPOSITORY_KEY = Symbol.for('RoleRepository');
 
 const toDomain = (record: {
   id: string;

@@ -172,9 +172,10 @@ domain/
 **Rules:**
 - Domain models should be plain TypeScript interfaces or classes
 - No dependencies on infrastructure (database, external services)
-- Repository interfaces are defined here but implemented in infrastructure
+- Repository interfaces **must** be defined in `domain/repositories/` and implemented in `infrastructure/`. Do **not** co-locate the interface with its implementation inside `infrastructure/` — this breaks the dependency direction (application layer would then depend on an infrastructure file)
 - Business validation logic belongs here
 - Domain logic should be testable without any infrastructure
+- Do **not** create custom error classes in domain modules (e.g., `class MyDomainAuthError extends Error`). Use the error factories from `@app/core` instead — see the Result Pattern section below
 
 **Example:**
 ```typescript
@@ -417,11 +418,30 @@ All operations that can fail must return `Result<T, E extends BasicError>` from 
 return ok(value);
 ```
 
-**Failure:**
+**Failure — use the correct factory for the scenario:**
+
+| Factory | `_type` | When to use |
+|---|---|---|
+| `basicErr(message, cause?)` | `'SystemError'` | Unexpected / infrastructure errors (DB failures, network errors) |
+| `notFoundErr(message)` | `'NotFoundError'` | Entity lookup returned nothing |
+| `unauthorizedErr(message)` | `'UnauthorizedError'` | Authentication / token validation failures |
+
 ```typescript
-return basicErr('Error message', originalError);
-return notFoundErr('Entity not found');
-return unauthorizedErr('Access denied');
+return basicErr('Failed to create product', error); // infrastructure error
+return notFoundErr(`Product with id ${id} not found`); // missing entity
+return unauthorizedErr('Invalid or expired access token'); // auth failure
+```
+
+**Do NOT create custom error classes in domain modules.** The `_type` discriminator on `BasicError` is sufficient for all branching in handlers and middleware. Custom classes add boilerplate with no structural benefit:
+
+```typescript
+// ❌ Wrong — unnecessary custom class
+export class MyModuleAuthError extends Error implements BasicError {
+  readonly _type = 'MyModuleAuthError';
+}
+
+// ✅ Correct — use factory from @app/core
+return unauthorizedErr('Login failed: invalid credentials');
 ```
 
 **Checking Results:**
@@ -430,6 +450,18 @@ if (isErr(result)) {
   return result; // Propagate error
 }
 // Use result.value safely
+```
+
+**Avoid redundant checks.** If both branches of an `isErr` check return the same value, simplify:
+
+```typescript
+// ❌ Redundant
+const result = await this.repo.getPaged(pager);
+if (isErr(result)) { return result; }
+return result;
+
+// ✅ Simplified
+return this.repo.getPaged(pager);
 ```
 
 ## Testing

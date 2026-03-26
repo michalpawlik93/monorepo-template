@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { BaseCommand, BasicError, Envelope, Handler, Result, isErr, ok } from '@app/core';
-import { IUserRoleRepository, USER_ROLE_REPOSITORY_KEY } from '../../../infrastructure/prisma';
+import { IUserRoleRepository, USER_ROLE_REPOSITORY_KEY } from '../../../domain';
 
 export const GET_USER_PERMISSIONS_COMMAND_TYPE = 'identity.getUserPermissions';
 

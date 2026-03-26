@@ -4,7 +4,8 @@ import { PrismaModuleConfig } from '@app/core/prisma';
 import { bindOrRebind } from '@app/core';
 import { createProductsPrisma } from './client';
 import { setProductsPrismaClient } from './tx';
-import { IProductsRepository, PRODUCTS_REPOSITORY_KEY, ProductsRepository } from './products.repository';
+import { IProductsRepository, PRODUCTS_REPOSITORY_KEY } from '../../domain';
+import { ProductsRepository } from './products.repository';
 
 export const PRODUCTS_TOKENS = {
   PRISMA_CONFIG: Symbol.for('ProductsPrismaConfig'),

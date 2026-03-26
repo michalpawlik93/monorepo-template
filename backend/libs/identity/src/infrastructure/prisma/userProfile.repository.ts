@@ -1,15 +1,7 @@
 import { injectable } from 'inversify';
 import { BasicError, Result, basicErr, getErrorMessage, notFoundErr, ok } from '@app/core';
-import { User } from '../../domain';
+import { IUserProfileRepository, User } from '../../domain';
 import { identityDb } from './tx';
-
-export interface IUserProfileRepository {
-  findById: (id: string) => Promise<Result<User, BasicError>>;
-  create: (data: User) => Promise<Result<User, BasicError>>;
-  update: (id: string, data: Partial<Pick<User, 'email' | 'lastLoginAt'>>) => Promise<Result<User, BasicError>>;
-}
-
-export const USER_PROFILE_REPOSITORY_KEY = Symbol.for('UserProfileRepository');
 
 const toDomain = (record: {
   id: string;

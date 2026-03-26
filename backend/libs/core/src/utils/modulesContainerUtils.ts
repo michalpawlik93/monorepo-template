@@ -28,7 +28,8 @@ export async function cleanConnections(
         continue;
       }
 
-      console['error'](
+      // eslint-disable-next-line no-console
+      console.error(
         `Error disconnecting module ${moduleContainer.name}:`,
         error,
       );

@@ -23,18 +23,12 @@ export interface PageRequestByTime {
   sortDirection?: SortDirection;
 }
 
-export const MockPageRequestByTime = (): PageRequestByTime => ({
-  pageSize: 10,
-  cursor: '1',
-  sortBy: 'publishedDate',
-  startDate: new Date('2024-01-01'),
-  endDate: new Date('2024-01-01'),
-});
-
 export type DeepRequired<T> = {
-  [P in keyof T]-?: T[P] extends object
-    ? T[P] extends (...args: unknown[]) => unknown
+  [P in keyof T]-?: T[P] extends (infer U)[]
+    ? DeepRequired<U>[]
+    : T[P] extends (...args: unknown[]) => unknown
       ? T[P]
-      : DeepRequired<T[P]>
-    : T[P];
+      : T[P] extends object
+        ? DeepRequired<T[P]>
+        : T[P];
 };

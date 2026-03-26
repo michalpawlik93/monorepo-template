@@ -51,19 +51,9 @@ export const registerProductsDomain = (
 
 export const connectProductsInfrastructure = async (
   _container: Container,
-  logger: ILogger,
+  _logger: ILogger,
 ): Promise<void> => {
-  // if (!container.isBound(MONGO_TOKENS.MONGOCONNECTION_KEY)) {
-  //   return;
-  // }
-
-  // const mongo = container.get<MongoConnection>(MONGO_TOKENS.MONGOCONNECTION_KEY);
-  // const result = await mongo.connect(() => {
-  //   logger.error('Mongo connection failed for products module');
-  // });
-  // if (isErr(result)) {
-  //   logger.error({ error: result.error }, result.error.message);
-  // }
+  return Promise.resolve();
 };
 
 export const disconnectProductsInfrastructure = async (

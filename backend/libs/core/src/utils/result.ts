@@ -2,8 +2,8 @@ import { z, ZodType } from 'zod';
 
 export class Ok<T = null> {
   readonly _tag = 'ok';
-  value: T;
-  messages?: string[];
+  readonly value: T;
+  readonly messages?: string[];
 
   constructor(value: T, messages?: string[]) {
     this.value = value;
@@ -13,7 +13,7 @@ export class Ok<T = null> {
 
 export class Err<E extends BasicError> {
   readonly _tag = 'err';
-  error: E;
+  readonly error: E;
 
   constructor(error: E) {
     this.error = error;

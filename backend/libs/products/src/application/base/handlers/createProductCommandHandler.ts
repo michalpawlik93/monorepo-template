@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { Handler, Envelope, BaseCommand, Result, BasicError, ok, isErr } from '@app/core';
-import { IProductsRepository, PRODUCTS_REPOSITORY_KEY } from '../../../infrastructure/prisma/products.repository';
+import { IProductsRepository, PRODUCTS_REPOSITORY_KEY } from '../../../domain';
 
 export const CREATE_PRODUCT_COMMAND_TYPE = 'product.create';
 

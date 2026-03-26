@@ -1,6 +1,6 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { BasicError, Result, err, ok } from '@app/core';
-import { createUser, IdentityAuthError, User } from '../../domain';
+import { BasicError, Result, ok, unauthorizedErr } from '@app/core';
+import { createUser, User } from '../../domain';
 import { SupabaseConfig } from './config';
 
 export interface AuthSession {
@@ -24,8 +24,10 @@ export interface IAuthenticationService {
   refreshToken: (payload: { refreshToken: string }) => Promise<Result<AuthSession, BasicError>>;
 }
 
-const toAuthError = (message: string, cause?: unknown): Result<never, BasicError> =>
-  err(new IdentityAuthError(message, cause));
+const toAuthError = (message: string, cause?: unknown): Result<never, BasicError> => {
+  void cause;
+  return unauthorizedErr(message);
+};
 
 const toSession = (session: {
   access_token: string;

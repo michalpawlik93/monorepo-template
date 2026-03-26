@@ -5,17 +5,19 @@ import { PrismaClient } from './generated/prisma';
 import { createIdentityPrisma } from './client';
 import { setIdentityPrismaClient } from './tx';
 import {
-  USER_PROFILE_REPOSITORY_KEY,
   IUserProfileRepository,
-  UserProfileRepository,
-} from './userProfile.repository';
-import { IRoleRepository, ROLE_REPOSITORY_KEY, RoleRepository } from './role.repository';
-import {
   IPermissionRepository,
+  IRoleRepository,
+  IUserRoleRepository,
   PERMISSION_REPOSITORY_KEY,
-  PermissionRepository,
-} from './permission.repository';
-import { IUserRoleRepository, USER_ROLE_REPOSITORY_KEY, UserRoleRepository } from './userRole.repository';
+  ROLE_REPOSITORY_KEY,
+  USER_PROFILE_REPOSITORY_KEY,
+  USER_ROLE_REPOSITORY_KEY,
+} from '../../domain';
+import { UserProfileRepository } from './userProfile.repository';
+import { RoleRepository } from './role.repository';
+import { PermissionRepository } from './permission.repository';
+import { UserRoleRepository } from './userRole.repository';
 
 export const IDENTITY_TOKENS = {
   PRISMA_CONFIG: Symbol.for('IdentityPrismaConfig'),

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { BaseCommand, BasicError, Envelope, Handler, Result } from '@app/core';
-import { IUserProfileRepository, USER_PROFILE_REPOSITORY_KEY } from '../../../infrastructure/prisma';
+import { IUserProfileRepository, USER_PROFILE_REPOSITORY_KEY } from '../../../domain';
 import { User } from '../../../domain';
 
 export const UPDATE_USER_PROFILE_COMMAND_TYPE = 'identity.updateUserProfile';

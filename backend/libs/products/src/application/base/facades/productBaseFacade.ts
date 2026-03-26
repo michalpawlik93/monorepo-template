@@ -102,9 +102,25 @@ export class ProductBaseFacade
       meta: {commandId: ulid()},
     };
 
-    return busResult.value.invoke<
+    const result = await busResult.value.invoke<
       GetPagedProductsCommand,
       PagerResult<Product>
     >(envelope);
+
+    if (isErr(result)) {
+      return result;
+    }
+
+    return {
+      ...result,
+      value: {
+        cursor: result.value.cursor,
+        data: result.value.data.map((product) => ({
+          id: product.id,
+          name: product.name,
+          priceCents: product.priceCents,
+        })),
+      },
+    };
   }
 }

@@ -6,7 +6,7 @@ import {
   IUserRoleRepository,
   ROLE_REPOSITORY_KEY,
   USER_ROLE_REPOSITORY_KEY,
-} from '../../../infrastructure/prisma';
+} from '../../../domain';
 
 export const REMOVE_ROLE_COMMAND_TYPE = 'identity.removeRole';
 

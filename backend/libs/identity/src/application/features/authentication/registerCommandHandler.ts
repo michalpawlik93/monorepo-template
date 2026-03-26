@@ -10,7 +10,7 @@ import {
   ROLE_REPOSITORY_KEY,
   USER_PROFILE_REPOSITORY_KEY,
   USER_ROLE_REPOSITORY_KEY,
-} from '../../../infrastructure/prisma';
+} from '../../../domain';
 
 export const REGISTER_COMMAND_TYPE = 'identity.register';
 

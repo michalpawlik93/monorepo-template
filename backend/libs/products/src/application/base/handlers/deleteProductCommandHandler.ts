@@ -12,7 +12,7 @@ import {
 import {
   IProductsRepository,
   PRODUCTS_REPOSITORY_KEY,
-} from '../../../infrastructure/prisma/products.repository';
+} from '../../../domain';
 
 export const DELETE_PRODUCT_COMMAND_TYPE = 'product.delete';
 
