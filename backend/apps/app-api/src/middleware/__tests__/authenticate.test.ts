@@ -1,17 +1,9 @@
 import { err, ok } from '@app/core';
 import type { IIdentityFacade } from '@app/integration-contracts';
 import type { FastifyRequest } from 'fastify';
-import { createAuthenticate } from '../middleware/authenticate';
-import '../types';
-
-const createReplyMock = () => {
-  const reply = {
-    code: jest.fn(),
-    send: jest.fn(),
-  };
-  reply.code.mockReturnValue(reply);
-  return reply;
-};
+import { createReplyMock } from '../../__fixtures__/replyMock';
+import { createAuthenticate } from '../authenticate';
+import '../../types';
 
 describe('authenticate middleware', () => {
   it('stores principal when token is valid', async () => {

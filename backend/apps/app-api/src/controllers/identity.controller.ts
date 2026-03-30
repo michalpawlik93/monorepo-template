@@ -6,6 +6,7 @@ import type {
   RefreshTokenBodyType,
   RegisterBodyType,
 } from '../schemas/identity.schema';
+import '../types';
 import { mapResultToReply } from '../utils/resultMapper';
 
 const unauthorized = (reply: FastifyReply, message: string) =>

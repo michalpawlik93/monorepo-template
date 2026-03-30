@@ -1,13 +1,5 @@
-import { requirePermission, requireRole } from '../middleware/authorize';
-
-const createReplyMock = () => {
-  const reply = {
-    code: jest.fn(),
-    send: jest.fn(),
-  };
-  reply.code.mockReturnValue(reply);
-  return reply;
-};
+import { createReplyMock } from '../../__fixtures__/replyMock';
+import { requirePermission, requireRole } from '../authorize';
 
 describe('authorize middleware', () => {
   it('allows request when role exists', async () => {

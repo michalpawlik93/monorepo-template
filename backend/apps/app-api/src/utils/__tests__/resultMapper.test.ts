@@ -1,19 +1,6 @@
 import { err, ok } from '@app/core';
-import { errorTypeToHttpStatus, mapResultToReply } from '../utils/resultMapper';
-
-type ReplyMock = {
-  code: jest.Mock;
-  send: jest.Mock;
-};
-
-const createReplyMock = (): ReplyMock => {
-  const reply = {
-    code: jest.fn(),
-    send: jest.fn(),
-  };
-  reply.code.mockReturnValue(reply);
-  return reply;
-};
+import { createReplyMock } from '../../__fixtures__/replyMock';
+import { errorTypeToHttpStatus, mapResultToReply } from '../resultMapper';
 
 describe('resultMapper', () => {
   it('maps successful result to configured success status', () => {
@@ -56,5 +43,21 @@ describe('resultMapper', () => {
 
   it('maps unknown error type to 500', () => {
     expect(errorTypeToHttpStatus('SystemError')).toBe(500);
+  });
+
+  it('supports custom toPayload mapper for paged response shape', () => {
+    const reply = createReplyMock();
+    mapResultToReply(
+      ok({ data: [{ id: 'p1' }], cursor: 'cursor-1' }),
+      reply as never,
+      200,
+      (value) => ({ data: value.data, cursor: value.cursor }),
+    );
+
+    expect(reply.code).toHaveBeenCalledWith(200);
+    expect(reply.send).toHaveBeenCalledWith({
+      data: [{ id: 'p1' }],
+      cursor: 'cursor-1',
+    });
   });
 });
